@@ -194,7 +194,7 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
 
         int return_fputs = fputs(generateCSTROutput, generateFILEoutput);
         if (return_fputs==EOF || return_fputs < 0)
-            exit(EXIT_FAILURE);
+            exit(2);
         exit(EXIT_SUCCESS);
     }
     else
@@ -206,20 +206,25 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
             perror("waitpid");
             exit(EXIT_FAILURE);
         }
-
-        if (WIFEXITED(status)) {
-            record_ok_test_fputs(WEXITSTATUS(status));
-        } else if (WIFSIGNALED(status)) {
-            record_crashed_test_fputs(WTERMSIG(status));
-        } else if (WIFSTOPPED(status)) {
-            record_stopped_test_fputs(WSTOPSIG(status));
-        } else if (WIFCONTINUED(status)) {
+        
+        if (WIFCONTINUED(status) || parent == 0) {
             kill(pid, SIGTERM);
             record_timedout_test_fputs();
+            return;
+        }
+        else if (WIFSIGNALED(status)) {
+            record_crashed_test_fputs(WTERMSIG(status));
+            return;
+        } 
+        else if (WIFSTOPPED(status) || WEXITSTATUS(status) == 2) {
+            record_stopped_test_fputs(WSTOPSIG(status));
+            return;
+        } 
+        else if (WIFEXITED(status)) {
+            record_ok_test_fputs(WEXITSTATUS(status));
+            return;
         }
     }
-    
-
 
 }
 
