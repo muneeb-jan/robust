@@ -117,12 +117,12 @@ const char *generateCSTR(int test_id) {
 
     else if (test_id == TC_CSTR_MEM_RONLY)
     {
-        ptr = (char*) malloc_prot(sizeof(char)*strlen(temp) + 1,(const void *)temp, PROT_READ);
+        ptr = (char *) malloc_prot(sizeof(char)*strlen(temp) + 1,(const void *)temp, PROT_READ);
     }
 
     else if (test_id == TC_CSTR_MEM_WONLY)
     {
-        ptr = (char*) malloc_prot(sizeof(char)*strlen(temp) + 1,(const void *)temp, PROT_WRITE);
+        ptr = (const char *) malloc_prot(sizeof(char)*strlen(temp) + 1,(const void *)temp, PROT_WRITE);
     }
     
     else if (test_id == TC_CSTR_MEM_RW)
@@ -139,7 +139,7 @@ const char *generateCSTR(int test_id) {
     else if (test_id == TC_CSTR_MEM_0_WONLY)
     {
         temp = "Hello there";
-        ptr = (char*) malloc_prot(sizeof(char)*strlen(temp),(const void *)temp, PROT_WRITE);
+        ptr = (const char *) malloc_prot(sizeof(char)*strlen(temp),(const void *)temp, PROT_WRITE);
     }
 
     else if (test_id == TC_CSTR_MEM_0_RW)
