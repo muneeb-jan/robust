@@ -150,9 +150,11 @@ const char *generateCSTR(int test_id) {
 
     else if (test_id == TC_CSTR_MEM_INACCESSIBLE)
     {
-        ptr = (const char *) malloc(5);
+        ptr = NULL;
+        /*ptr = (const char *) malloc(5);
         ptr = "hell\0";
         free((void *)ptr);
+        */
     }
 
     else
