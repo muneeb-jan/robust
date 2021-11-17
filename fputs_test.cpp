@@ -194,7 +194,7 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
 
         int return_fputs = fputs(generateCSTROutput, generateFILEoutput);
         if (return_fputs==EOF || return_fputs < 0)
-            exit(2);
+            exit(EXIT_FAILURE);
         exit(EXIT_SUCCESS);
     }
     else
@@ -207,7 +207,7 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
             exit(EXIT_FAILURE);
         }
         
-        if (WIFCONTINUED(status) || parent == 0) {
+        if (parent == 0) {
             kill(pid, SIGTERM);
             record_timedout_test_fputs();
             return;
@@ -216,7 +216,7 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
             record_crashed_test_fputs(WTERMSIG(status));
             return;
         } 
-        else if (WIFSTOPPED(status) || WEXITSTATUS(status) == 2) {
+        else if (WIFSTOPPED(status)) {
             record_stopped_test_fputs(WSTOPSIG(status));
             return;
         } 
