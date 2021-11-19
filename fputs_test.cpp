@@ -13,18 +13,13 @@
 #include "stats.h"
 
 FILE *generateFILE(int test_id) {
-    // generate test FILE* test value
-    // see tests.h
-    // use the functions specified by tools.h to create appropriate test values
-    // you can use a copy of test.txt as a file to test on
-    // test commit 3
+
     FILE *file;
     char *dest = "test2.txt";
     filecopy("test.txt", dest);
     
     if (test_id == TC_FILE_NULL)
     {
-        //printf("\nI have reached the file func.\n");
         file = NULL;
     }
 
@@ -80,7 +75,7 @@ FILE *generateFILE(int test_id) {
 
     else if (test_id == TC_FILE_MEM_0_WONLY)
     {
-        file = (FILE *) malloc_prot(getpagesize(), NULLpage(), PROT_WRITE);
+        file = (FILE *) malloc_prot(1024, NULLpage(), PROT_WRITE);
     }
 
     else if (test_id == TC_FILE_MEM_0_RW)
@@ -102,16 +97,12 @@ FILE *generateFILE(int test_id) {
 }
 
 const char *generateCSTR(int test_id) {
-    // generate a `const char*` test value
-    // see tests.h
-    // use the functions specified by tools.h to create appropriate test values
 
     const char *ptr;
     char *temp = "Hello there\0";
 
     if (test_id == TC_CSTR_NULL)
-    {
-        //printf("\nI have reached the CSTR func.\n");    
+    {   
         ptr = NULL;
     }
 
@@ -151,10 +142,6 @@ const char *generateCSTR(int test_id) {
     else if (test_id == TC_CSTR_MEM_INACCESSIBLE)
     {
         ptr = NULL;
-        /*ptr = (const char *) malloc(5);
-        ptr = "hell\0";
-        free((void *)ptr);
-        */
     }
 
     else
@@ -167,18 +154,10 @@ const char *generateCSTR(int test_id) {
 
 }
 
-// waiting time before querying the child's exit status
-// You might want to try using a smaller value in order to get the CI results faster,
-// but there is a chance that your tests will start failing because of the timeout
 const double wait_time = 1.0;
 
 void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
-    // execute a single test
-    // use the functions in stats.h to record all tests
-    // execute print
-    //if fputs has error, depending on that 
-
-    
+  
     pid_t pid, parent;
     int status;
     
@@ -231,7 +210,6 @@ void test_fputs(const TestCase &str_testCase, const TestCase &file_testCase) {
 }
 
 int main(int argc, const char **argv) {
-    // execute all tests and catch exceptions
 
     for (int i = 0; i < testCases_CSTR_count; i++)
     {
@@ -240,10 +218,6 @@ int main(int argc, const char **argv) {
                 test_fputs(testCases_CSTR[i], testCases_FILE[j]);
         }
     }
-
-
-    //test_fputs(testCases_CSTR[TC_CSTR_NULL], testCases_FILE[TC_FILE_NULL]);
-    //test_fputs(testCases_CSTR[TC_CSTR_MEM_RONLY], testCases_FILE[TC_FILE_RONLY]);
 
     print_summary();
     return 0;
