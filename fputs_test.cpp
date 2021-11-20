@@ -75,7 +75,7 @@ FILE *generateFILE(int test_id) {
 
     else if (test_id == TC_FILE_MEM_0_WONLY)
     {
-        file = (FILE *) malloc_prot(1024, NULLpage(), PROT_WRITE);
+        file = (FILE *) malloc_prot(10, NULLpage(), PROT_WRITE);
     }
 
     else if (test_id == TC_FILE_MEM_0_RW)
